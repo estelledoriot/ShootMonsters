@@ -10,9 +10,9 @@ class Fenetre:
 
     def __init__(self) -> None:
         pygame.init()
-        WIDTH = 1080
-        HEIGHT = 720
-        self.screen: pygame.Surface = pygame.display.set_mode((WIDTH, HEIGHT))
+        width = 1080
+        height = 720
+        self.screen: pygame.Surface = pygame.display.set_mode((width, height))
         pygame.display.set_caption("Shoot monsters")
         self.clock: pygame.time.Clock = pygame.time.Clock()
         self.game = Game()

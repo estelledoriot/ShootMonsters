@@ -28,6 +28,7 @@ class Game:
 
     def game_logic(self) -> None:
         """fait un tour du jeu"""
+
         # lancement des projectiles
         for event in pygame.event.get(eventtype=pygame.KEYDOWN):
             if event.key == pygame.K_SPACE:
@@ -36,17 +37,28 @@ class Game:
         # déplacement des projectiles
         self.all_projectiles.update()
 
-        # déplacement des monstres
-        self.all_monsters.update(self.player)
-
         # collision des monstres et des projectiles
-        pygame.sprite.groupcollide(
+        hit_monsters = pygame.sprite.groupcollide(
             self.all_monsters,
             self.all_projectiles,
             False,
             True,
             pygame.sprite.collide_mask,
         )
+        for monster in hit_monsters:
+            if hit_monsters[monster]:
+                monster.damage(self.player.attack)
+
+        # déplacement des monstres
+        self.all_monsters.update(self.player)
+
+        # collision entre les monstres et le joueur
+
+        monsters = pygame.sprite.spritecollide(
+            self.player, self.all_monsters, False, pygame.sprite.collide_mask
+        )
+        for monster in monsters:
+            self.player.damage(monster.attack)
 
         # déplacement du personnage
         self.player.update(self.all_monsters)
@@ -56,6 +68,9 @@ class Game:
         screen = pygame.display.get_surface()
         screen.blit(self.background, (0, -200))
         screen.blit(self.player.image, self.player.rect)
+        self.player.draw_health_bar()
         self.all_projectiles.draw(screen)
         self.all_monsters.draw((screen))
+        for monster in self.all_monsters:
+            monster.draw_health_bar()
         pygame.display.flip()

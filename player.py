@@ -5,6 +5,8 @@ Peut se déplacer à droite et à gauche
 
 import pygame
 
+from health_bar import HealthBar
+
 
 class Player(pygame.sprite.Sprite):
     """joueur
@@ -25,6 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.health: int = self.max_health
         self.attack: int = 10
         self.velocity: int = 5
+        self.health_bar: HealthBar = HealthBar(self.health / self.max_health)
 
     @property
     def center(self) -> tuple[int, int]:
@@ -42,13 +45,22 @@ class Player(pygame.sprite.Sprite):
         self.rect.x -= self.velocity
         self.rect.left = max(self.rect.left, 0)
 
-    def update(self, all_monsters):
+    def damage(self, amount: int) -> None:
+        """dégâts infligés au joueur"""
+        self.health -= amount
+
+    def update(self, all_monsters: pygame.sprite.Group) -> None:
         """mise à jour de la position du personnage"""
         pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_RIGHT]:
-            if not pygame.sprite.spritecollide(
-                self, all_monsters, False, pygame.sprite.collide_mask
-            ):
-                self.move_right()
+        if pressed[pygame.K_RIGHT] and not pygame.sprite.spritecollide(
+            self, all_monsters, False, pygame.sprite.collide_mask
+        ):
+            self.move_right()
         elif pressed[pygame.K_LEFT]:
             self.move_left()
+
+        self.health_bar.update(self.health / self.max_health, self.rect.midtop)
+
+    def draw_health_bar(self) -> None:
+        """dessine la barre de vie"""
+        self.health_bar.draw()

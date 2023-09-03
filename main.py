@@ -4,30 +4,33 @@ import pygame
 
 from game import Game
 
-pygame.init()
 
-pygame.display.set_caption("Shoot monsters")
-WIDTH = 1080
-HEIGHT = 720
-screen: pygame.Surface = pygame.display.set_mode((WIDTH, HEIGHT))
-clock: pygame.time.Clock = pygame.time.Clock()
+class Fenetre:
+    """Gestion de la fenêtre du jeu"""
+
+    def __init__(self) -> None:
+        pygame.init()
+        WIDTH = 1080
+        HEIGHT = 720
+        self.screen: pygame.Surface = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption("Shoot monsters")
+        self.clock: pygame.time.Clock = pygame.time.Clock()
+        self.game = Game()
+
+    def run(self) -> None:
+        """Fait tourner le jeu"""
+        while True:
+            self.game.game_logic()
+            self.game.draw()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return
+
+            self.clock.tick(60)
 
 
-game = Game()
-
-RUNNING = True
-
-while RUNNING:
-    game.game_logic()
-    game.draw()
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            RUNNING = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                game.launch_projectile()
-
-    clock.tick(60)
-
-pygame.quit()
+if __name__ == "__main__":
+    jeu = Fenetre()
+    jeu.run()
+    pygame.quit()

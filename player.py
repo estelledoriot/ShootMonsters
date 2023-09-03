@@ -41,3 +41,14 @@ class Player(pygame.sprite.Sprite):
         """déplacement vers la gauche"""
         self.rect.x -= self.velocity
         self.rect.left = max(self.rect.left, 0)
+
+    def update(self, all_monsters):
+        """mise à jour de la position du personnage"""
+        pressed = pygame.key.get_pressed()
+        if pressed[pygame.K_RIGHT]:
+            if not pygame.sprite.spritecollide(
+                self, all_monsters, False, pygame.sprite.collide_mask
+            ):
+                self.move_right()
+        elif pressed[pygame.K_LEFT]:
+            self.move_left()

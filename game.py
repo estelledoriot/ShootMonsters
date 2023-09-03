@@ -18,14 +18,6 @@ class Game:
         self.all_monsters: pygame.sprite.Group = pygame.sprite.Group()
         self.spawn_monster()
 
-    def check_collision(
-        self, sprite: Player | Monster | Projectile, group: pygame.sprite.Group
-    ) -> list:
-        """vérifie si un sprite entre en collision avec un groupe de sprites"""
-        return pygame.sprite.spritecollide(
-            sprite, group, False, pygame.sprite.collide_mask
-        )
-
     def spawn_monster(self) -> None:
         """crée un nouveau monstre"""
         self.all_monsters.add(Monster((1000, 670)))
@@ -36,20 +28,28 @@ class Game:
 
     def game_logic(self) -> None:
         """fait un tour du jeu"""
+        # lancement des projectiles
+        for event in pygame.event.get(eventtype=pygame.KEYDOWN):
+            if event.key == pygame.K_SPACE:
+                self.launch_projectile()
+
+        # déplacement des projectiles
         self.all_projectiles.update()
 
-        for monster in self.all_monsters:
-            if not self.check_collision(
-                monster, pygame.sprite.Group(self.player)
-            ):
-                monster.forward()
+        # déplacement des monstres
+        self.all_monsters.update(self.player)
 
-        pressed = pygame.key.get_pressed()
-        if pressed[pygame.K_RIGHT]:
-            if not self.check_collision(self.player, self.all_monsters):
-                self.player.move_right()
-        elif pressed[pygame.K_LEFT]:
-            self.player.move_left()
+        # collision des monstres et des projectiles
+        pygame.sprite.groupcollide(
+            self.all_monsters,
+            self.all_projectiles,
+            False,
+            True,
+            pygame.sprite.collide_mask,
+        )
+
+        # déplacement du personnage
+        self.player.update(self.all_monsters)
 
     def draw(self) -> None:
         """affiche tous les éléments du jeu"""

@@ -19,8 +19,14 @@ class Monster(pygame.sprite.Sprite):
         self.rect: pygame.Rect = self.image.get_rect(
             midbottom=midbottom_origin
         )
-        self.velocity = 2
+        self.velocity: int = 2
 
-    def forward(self) -> None:
+    def update(self, player) -> None:
         """déplacement du monstre"""
-        self.rect.x -= self.velocity
+        if not pygame.sprite.spritecollide(
+            self,
+            pygame.sprite.Group(player),
+            False,
+            pygame.sprite.collide_mask,
+        ):
+            self.rect.x -= self.velocity

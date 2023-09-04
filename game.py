@@ -26,7 +26,7 @@ class Game:
         """ajoute un nouveau projectile"""
         self.all_projectiles.add(Projectile(self.player.center))
 
-    def game_logic(self) -> None:
+    def logic(self) -> None:
         """fait un tour du jeu"""
 
         # lancement des projectiles
@@ -49,19 +49,28 @@ class Game:
             if hit_monsters[monster]:
                 monster.damage(self.player.attack)
 
+        if not self.all_monsters:
+            self.spawn_monster()
+
         # déplacement des monstres
         self.all_monsters.update(self.player)
 
         # collision entre les monstres et le joueur
-
         monsters = pygame.sprite.spritecollide(
             self.player, self.all_monsters, False, pygame.sprite.collide_mask
         )
         for monster in monsters:
             self.player.damage(monster.attack)
+        # TODO fin du jeu lorsque le joueur est mort
+        # TODO score ?
 
         # déplacement du personnage
         self.player.update(self.all_monsters)
+
+    # TODO finir
+    def next(self) -> bool:
+        """passe à la scène suivante"""
+        return False
 
     def draw(self) -> None:
         """affiche tous les éléments du jeu"""

@@ -59,7 +59,10 @@ class Player(pygame.sprite.Sprite):
         elif pressed[pygame.K_LEFT]:
             self.move_left()
 
-        self.health_bar.update(self.health / self.max_health, self.rect.midtop)
+        self.health_bar.update(
+            self.health / self.max_health,
+            (self.rect.centerx, self.rect.top + 20),
+        )
 
     def draw_health_bar(self) -> None:
         """dessine la barre de vie"""

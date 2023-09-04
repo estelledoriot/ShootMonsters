@@ -44,7 +44,10 @@ class Monster(pygame.sprite.Sprite):
         self.forward(player)
         if self.health <= 0:
             self.kill()
-        self.health_bar.update(self.health / self.max_health, self.rect.midtop)
+        self.health_bar.update(
+            self.health / self.max_health,
+            (self.rect.centerx, self.rect.top - 10),
+        )
 
     def draw_health_bar(self) -> None:
         """dessine la barre de vie"""

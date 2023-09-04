@@ -37,6 +37,6 @@ class Projectile(pygame.sprite.Sprite):
         """déplacement des projectiles"""
         self.rotate()
         self.rect.x += self.velocity
-        largeur, _ = pygame.display.get_window_size()
-        if self.rect.right > largeur:
+        width, _ = pygame.display.get_window_size()
+        if self.rect.right > width:
             self.kill()

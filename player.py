@@ -51,6 +51,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, all_monsters: pygame.sprite.Group) -> None:
         """mise à jour de la position du personnage"""
+        # déplacements
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_RIGHT] and not pygame.sprite.spritecollide(
             self, all_monsters, False, pygame.sprite.collide_mask
@@ -59,6 +60,7 @@ class Player(pygame.sprite.Sprite):
         elif pressed[pygame.K_LEFT]:
             self.move_left()
 
+        # mise à jour de la barre de vie
         self.health_bar.update(
             self.health / self.max_health,
             (self.rect.centerx, self.rect.top + 20),

@@ -25,7 +25,7 @@ class Projectile(pygame.sprite.Sprite):
         self.angle: int = 0
 
         self.velocity: int = 7
-        self.angular_velocity: int = 8
+        self.angular_velocity: int = 10
 
     def rotate(self) -> None:
         """fait tourner l'image sur elle-même"""
@@ -35,8 +35,11 @@ class Projectile(pygame.sprite.Sprite):
 
     def update(self) -> None:
         """déplacement des projectiles"""
+        # déplacement
         self.rotate()
         self.rect.x += self.velocity
+
+        # suppression du projectile s'il sort de l'écran
         width, _ = pygame.display.get_window_size()
         if self.rect.right > width:
             self.kill()

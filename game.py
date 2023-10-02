@@ -28,7 +28,6 @@ class Game:
 
     def logic(self) -> None:
         """fait un tour du jeu"""
-
         # lancement des projectiles
         for event in pygame.event.get(eventtype=pygame.KEYDOWN):
             if event.key == pygame.K_SPACE:
@@ -70,16 +69,20 @@ class Game:
     # TODO finir
     def next(self) -> bool:
         """passe à la scène suivante"""
-        return False
+        return self.player.health <= 0
 
     def draw(self) -> None:
         """affiche tous les éléments du jeu"""
         screen = pygame.display.get_surface()
         screen.blit(self.background, (0, -200))
+
         screen.blit(self.player.image, self.player.rect)
         self.player.draw_health_bar()
+
         self.all_projectiles.draw(screen)
+
         self.all_monsters.draw((screen))
         for monster in self.all_monsters:
             monster.draw_health_bar()
+
         pygame.display.flip()

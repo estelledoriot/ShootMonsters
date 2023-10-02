@@ -6,7 +6,8 @@ import pygame
 
 
 class HealthBar:
-    """barre de vie"""
+    """barre de vie
+    ratio: ratio de vie restant"""
 
     def __init__(
         self,

@@ -29,17 +29,17 @@ class StartScreen:
         self.button_rect = self.button.get_rect(
             center=(width // 2, height // 2 + 70)
         )
+        self.go_next: bool = False
 
     def logic(self) -> None:
         """déroulement des actions"""
-        return
+        for _ in pygame.event.get(pygame.MOUSEBUTTONDOWN):
+            if self.button_rect.collidepoint(pygame.mouse.get_pos()):
+                self.go_next = True
 
     def next(self) -> bool:
         """passe à la sène suivante"""
-        return (
-            self.button_rect.collidepoint(pygame.mouse.get_pos())
-            and pygame.mouse.get_pressed()[0]
-        )
+        return self.go_next
 
     def draw(self) -> None:
         """dessine les éléments de l'écran d'accueil"""

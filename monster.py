@@ -42,8 +42,10 @@ class Monster(pygame.sprite.Sprite):
     def update(self, player: pygame.sprite.Sprite) -> None:
         """mise à jour du monstre"""
         self.forward(player)
+
         if self.health <= 0:
             self.kill()
+
         self.health_bar.update(
             self.health / self.max_health,
             (self.rect.centerx, self.rect.top - 10),
